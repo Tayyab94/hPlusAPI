@@ -1,0 +1,74 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+        <table class="table table-bordered" id="Table">
+            <tr>
+                <th>Regd No</th>
+                <th>SKU</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Is Available</th>
+                <th>Category</th>
+            </tr>   <!--end of table-row -->
+       
+            <tbody id="table_Body">
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+
+            $.ajax({
+
+                type: "GET",
+                url: "https://localhost:44334/api/Productsv1/listProduct",
+                contentType: "application/Json; charset=utf-8",
+                dataType: "Json",
+                success: function (data) {
+                    bindDataTo(data);
+                    alert("Success "+data.id);
+                    console.log(data);
+                },
+                error: function (data) {
+                    alert("Error");
+                    alert(data);
+                },
+                
+            })
+        });
+
+
+        function bindDataTo(product) {
+            $.each(product, function (i, item) {
+                var rows = "<tr>" +
+                    "<td>" + item.id + "</td>" +
+                    "<td>" + item.sku + "</td>" +
+                    "<td>" + item.name + "</td>" +
+                    "<td>" + item.description + "</td>" +
+                    "<td>" + item.price + "</td>" +
+                    "<td>" + item.isAvailable + "</td>" +
+                    "<td>" + item.categoryId + "</td></tr>";
+
+                $('#table_Body').append(rows);
+
+            });
+        }
+
+    </script>
+
+
+}
